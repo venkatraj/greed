@@ -1385,16 +1385,16 @@ object {
   .share-box ul li {
     border: 0;
     padding: 0;
-    margin: 0 0px 0px 8px;
+    margin: 0 0px 0px 10px;
     display: inline-block; }
     .share-box ul li a {
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
       color: #252225;
       display: inline-block;
       background-color: #252225;
       text-align: center;
-      line-height: 30px;
+      line-height: 35px;
       -webkit-transform: rotate(-45deg);
               transform: rotate(-45deg);
       color: #fff; }
@@ -1405,8 +1405,7 @@ object {
         -webkit-transform: rotate(45deg);
                 transform: rotate(45deg);
         font-size: 14px;
-        font-size: 1.4rem;
-        line-height: 2; }
+        font-size: 1.4rem; }
 
 .share-box {
   margin-bottom: 50px; }
@@ -1434,8 +1433,7 @@ ol.comment-list {
   margin: 0;
   list-style-type: none;
   margin-bottom: 30px;
-  border: 1px solid #737373;
-  background: #252225; }
+  border: 1px solid #737373; }
 
 ol.comment-list ol.children {
   list-style-type: none;
@@ -1469,8 +1467,7 @@ ol.comment-list .reply {
 
 .comment-author {
   display: inline;
-  text-transform: uppercase;
-  color: #fff; }
+  text-transform: uppercase; }
   .comment-author img {
     position: absolute;
     right: 0; }
@@ -1493,8 +1490,6 @@ ol.comment-list article {
   ol.comment-list article .fn {
     font-family: "Montserrat", sans-serif;
     cursor: pointer; }
-  ol.comment-list article p {
-    color: #fff; }
 
 ol.comment-list article .comment-author img {
   top: -5px;
@@ -1503,14 +1498,14 @@ ol.comment-list article .comment-author img {
   height: 100px; }
 
 ol.comment-list li.byuser .comment-metadata a:hover {
-  color: #fff; }
+  color: #252225; }
 
 .comment-meta .edit-link {
   position: absolute;
   left: 0;
   top: -4px; }
   .comment-meta .edit-link a {
-    color: #fff;
+    color: #252225;
     padding: 5px 12px; }
     .comment-meta .edit-link a:hover {
       background-color: #269fc6;
@@ -1779,47 +1774,6 @@ blockquote, q {
   .single-post #primary .tag-footer .tag-title {
     color: #269fc6; }
 
-
-.search article .entry-meta {
-  text-transform: uppercase; }
-  .search article .entry-meta span {
-    position: relative; }
-    .search article .entry-meta span:after {
-      position: absolute;
-      content: "-";
-      font-size: 17px;
-      top: auto;
-      right: auto; }
-    .search article .entry-meta span a {
-      color: #252225;
-      font-size: 14px;
-      padding: 0px 20px 0px 10px; }
-      .search article .entry-meta span a:hover {
-        color: #269fc6; }
-    .search article .entry-meta span:last-child:after {
-      display: none; }
-  .search article .entry-meta .author a {
-    padding-right: 0px; }
-
-.search article .entry-date {
-  border: 2px solid #269fc6;
-  float: right;
-  text-align: center;
-  width: 15%; }
-  .search article .entry-date .date-structure {
-    display: inline-block;
-    padding: 5px 0px;
-    color: #269fc6;
-    line-height: 1; }
-    .search article .entry-date .date-structure h2 {
-      font-size: 54px;
-      color: #269fc6;
-      margin-bottom: 0px; }
-    .search article .entry-date .date-structure span {
-      display: block;
-      font-size: 16px;
-      font-weight: bold; }
-
 .home .site-header {
   border-bottom: none; }
 
@@ -1858,6 +1812,8 @@ blockquote, q {
   .services-wrapper .one-third.service {
     padding: 0 10px;
     padding: 40px 10px; }
+  .services-wrapper .one-third.fourth.service {
+    clear: both; }
   .services-wrapper .icon-wrapper {
     text-align: center;
     margin-bottom: 15px;
@@ -1895,6 +1851,12 @@ blockquote, q {
       color: #fff; }
     .services-wrapper .service-content:hover h4 a {
       color: #269fc6; }
+  .services-wrapper .service-content.image {
+    float: none;
+    width: 100%;
+    padding-right: 0px;
+    margin-top: 10px;
+    text-align: center; }
 
 
 .post-wrapper {
@@ -2840,6 +2802,9 @@ blockquote, q {
 .site-footer .widget_calendar table a {
   color: #269fc6; }
 
+.site-footer .widget_calendar table tr {
+  background-color: #fff; }
+
 .widget-area .rss-date,
 .widget-area .widget_rss cite {
   display: block;
@@ -3035,6 +3000,23 @@ blockquote, q {
       display: block;
       color: #737373;
       font-size: 14px; }
+  .site-footer .scroll-to-top {
+    background: #269fc6;
+    color: #fff;
+    bottom: 10%;
+    cursor: pointer;
+    position: fixed;
+    left: 20px;
+    z-index: 999;
+    text-align: center;
+    line-height: 40px;
+    width: 40px;
+    background-clip: padding-box;
+    
+    border-radius: 4px;
+    transition: background-color 0.3s linear; }
+  .site-footer .scroll-to-top:hover {
+    background: rgba(38, 159, 198, 0.8); }
 
 .site-info {
   background: #269fc6; }

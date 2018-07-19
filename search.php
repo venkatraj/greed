@@ -13,7 +13,7 @@ get_template_part( 'template-parts/breadcrumb' ); ?>
 
         <?php $sidebar_position = get_theme_mod( 'sidebar_position', 'right' ); ?>
 		<?php if( 'left' == $sidebar_position ) :?>
-			<?php get_sidebar('left'); ?>
+			<?php get_sidebar(); ?>
 		<?php endif; ?>  
 		
 	<section id="primary" class="content-area <?php greed_layout_class(); ?>  columns">
@@ -41,12 +41,15 @@ get_template_part( 'template-parts/breadcrumb' ); ?>
 
 		
 				<?php 
-			    if(  get_theme_mod ('numeric_pagination',true) ) : 
-					the_posts_pagination();
-				else :
-					the_posts_navigation();     
-				endif; 
-			?>
+					if(  get_theme_mod ('numeric_pagination',true) ) : 
+							the_posts_pagination();
+						else :
+							the_posts_navigation( array(
+							    'prev_text' => __(' &larr; Previous Post','greed'),
+							    'next_text' => __('Next Post &rarr;','greed'),
+							 ) );      
+						endif; 
+				?>
 
 		<?php else : ?>
 

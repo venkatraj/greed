@@ -105,7 +105,8 @@ add_action( 'save_post',     'greed_category_transient_flusher' );
 if( ! function_exists('greed_recent_posts') ) {      
 	function greed_recent_posts() {       
 		$output = '';
-		$posts_per_page  = get_theme_mod('recent_posts_count', 3 );
+		$posts_per_page  = 3; 
+		$post_ID  = explode (',',get_theme_mod('recent_posts_exclude'));
 		// WP_Query arguments
 		$args = array (
 			'post_type'              => 'post',
@@ -113,6 +114,7 @@ if( ! function_exists('greed_recent_posts') ) {
 			'posts_per_page'         => intval($posts_per_page),
 			'ignore_sticky_posts'    => true,
 			'order'                  => 'DESC',
+			'post__not_in'           => $post_ID,
 		);
 
 		// The Query
@@ -126,7 +128,7 @@ if( ! function_exists('greed_recent_posts') ) {
 				$output.= '<div class="section-head">';
 				$output.= '<h1 class="title-divider">' . get_the_title(absint($recent_post_section_title)) . '</h1>';
 				$description = get_post_field('post_content',absint($recent_post_section_title));
-				$output.= '<p class="sub-description">' . $description . '</p>';
+				$output.= '<p class="sub-description">' . esc_html($description) . '</p>';
 			    $output.= '</div>';
 			}
 			$output .=  '<div class="container">'; 
@@ -147,7 +149,7 @@ if( ! function_exists('greed_recent_posts') ) {
 											$output .= '<a href="'. esc_url(get_permalink()) . '">'. get_the_post_thumbnail($query->post->ID ,'greed-recent-posts-img', array('srcset' => $recent_post_image , 'link' => $image_link) ).'</a>';
 										}
 										else {  
-											$output .= '<img src="' . get_template_directory_uri()  . '/images/no-image-blog-full-width.png" alt="" >';
+											$output .= '<img src="' . get_template_directory_uri()  . '/images/no-image.png" alt="" >';
 										}   
 									$output .= '</div><!-- .latest-post-thumb -->';
 									$output .= '<div class=latest-post-details>';
@@ -163,7 +165,7 @@ if( ! function_exists('greed_recent_posts') ) {
 										$output .='<div class="entry-meta">';  
 											$output .='<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '"><i class="fa fa-user"></i></a></span>';
 											$output .='<span class="comments-link"><a href="' . esc_url(get_comments_link()) .'"><i class="fa fa-comments"></i></a></span>';
-											$output .='<span class="data-structure"><a class="url fn n" href="'. get_day_link( get_the_time('Y'), get_the_time('m'),get_the_time('d')). '"><i class="fa fa-calendar"></i></a></span>';
+											$output .='<span class="data-structure"><a class="url fn n" href="'. esc_url( get_day_link( get_the_time('Y'), get_the_time('m'),get_the_time('d')) ). '"><i class="fa fa-calendar"></i></a></span>';
 										$output .='</div><!-- entry-meta -->';	
 									$output .= '</div><!-- .latest-post-details -->';
 
@@ -176,6 +178,7 @@ if( ! function_exists('greed_recent_posts') ) {
 				    $output .= '</div>';
 				$output .= '</div>';
 				
+			$output .= '</div>';
 			$output .= '</div><!-- .post-wrapper -->';
 		} 
 		$query = null;
@@ -282,17 +285,7 @@ if( ! function_exists('greed_recent_posts') ) {
 				$post_type = get_post_type_object(get_post_type());
 				echo $before . $post_type->labels->singular_name . $after;
 
-			} elseif ( is_attachment() ) {
-				$parent = get_post($post->post_parent);
-				$cat = get_the_category($parent->ID); $cat = $cat[0];
-				$cats = get_category_parents($cat, TRUE, $delimiter);
-				$cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
-				$cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
-				echo $cats;
-				printf($link, get_permalink($parent), $parent->post_title);
-				if ($showCurrent == 1) echo $delimiter . $before . get_the_title() . $after;
-
-			} elseif ( is_page() && !$post->post_parent ) {
+			}  elseif ( is_page() && !$post->post_parent ) {
 				if ($showCurrent == 1) echo $before . get_the_title() . $after;
 
 			} elseif ( is_page() && $post->post_parent ) {
@@ -490,7 +483,7 @@ if( ! function_exists('greed_top_meta') ) {
 		if ( 'post' == get_post_type() ) {  ?>
 			<div class="entry-meta">
 				<span class="date-structure">				
-					<span class="dd"><a class="url fn n" href="<?php echo get_day_link(get_the_time('Y'), get_the_time('m'),get_the_time('d')); ?>"><?php  the_time(get_option('date_format')); ?></a></span>			
+					<span class="dd"><a class="url fn n" href="<?php echo esc_url( get_day_link(get_the_time('Y'), get_the_time('m'),get_the_time('d')) ); ?>"><?php  the_time(get_option('date_format')); ?></a></span>			
 				</span>  
 				<?php greed_comments_meta(); ?> 
 				<?php greed_author(); ?>
@@ -542,7 +535,7 @@ if( ! function_exists ( 'greed_add_service_section' ) ) {
 			echo '<h1 class="title-divider">' . get_the_title(absint($service_section_title)) . '</h1>';
 			$description = get_post_field('post_content',absint($service_section_title));
 			if($description) {
-				echo '<p class="sub-description">' . $description . '</p>';
+				echo '<p class="sub-description">' . esc_html($description) . '</p>';
 			}
 		    echo '</div>';
 		}
@@ -558,46 +551,46 @@ if( ! function_exists ( 'greed_add_service_section' ) ) {
 			$query = new WP_Query($args); 
 			if( $query->have_posts()) : ?>
 				<div class="services-wrapper clearfix">
-					<?php $i = 1;
+					<?php $i = 1; 
 					while($query->have_posts()) :
 							$query->the_post(); ?>  
-							    <div class="one-third column service">
-							    	
-							    	    <?php if($i == 1):
-							    	      $icon_url =  $service_section_icon_1;
-							    	      elseif($i == 2):
-							    	       $icon_url =  $service_section_icon_2;
-							    	   	  elseif($i == 3):
-							    	       	$icon_url =  $service_section_icon_3;
-							    	      elseif($i == 4):
-							    	       	$icon_url =  $service_section_icon_4;
-							    	      elseif($i == 5):
-							    	       	$icon_url =  $service_section_icon_5;
-							    	      elseif($i == 6):
-							    	       	$icon_url =  $service_section_icon_6;
-							    	      
-							    	      endif;
-
-						    	        if($icon_url): ?>
-						    	        <div class="icon-wrapper">
-						    	          	<i class="fa <?php echo $icon_url; ?>" ></i>
-										</div>
-						    	        <?php
-						    	        elseif( has_post_thumbnail() ) : ?>
-	                                        <a href="<?php echo esc_url( get_permalink() ); ?>" rel="bookmark"><?php the_post_thumbnail('greed_recent_page_img'); ?></a><?php
-						    	        endif; ?>
-							    	
-							    	<div class="service-content">
-							    	    <?php the_title( sprintf( '<h4><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h4>' ); ?>
-								    	<?php the_content( __( 'Read More', 'greed' ) ); 
-								    	wp_link_pages( array(
-											'before' => '<div class="page-links">' . esc_html__( 'Pages: ', 'greed' ),
-											'after'  => '</div>',
-										) );?>
-							    	</div>
-							    </div>
-							   	
-							    <?php $i++;
+							<?php 
+							$service = "";
+							if($i == 1):
+								$icon_url =  $service_section_icon_1;
+								elseif($i == 2):
+								$icon_url =  $service_section_icon_2;
+								elseif($i == 3): 
+								$icon_url =  $service_section_icon_3;
+								elseif($i == 4):
+									$icon_url =  $service_section_icon_4;
+									$service = "fourth";
+								elseif($i == 5):
+								$icon_url =  $service_section_icon_5;
+								elseif($i == 6):
+								$icon_url =  $service_section_icon_6;
+							endif;?>
+							<div class="one-third column <?php echo $service;?> service">	
+								<?php if($icon_url): 
+									$service_class = "icon";?>
+									<div class="icon-wrapper">
+										<i class="fa <?php echo $icon_url; ?>" ></i>
+									</div>
+								<?php elseif( has_post_thumbnail() ) :
+									$service_class = "image"; ?>
+									<a href="<?php echo esc_url( get_permalink() ); ?>" rel="bookmark"><?php the_post_thumbnail('greed-recent-page-img'); ?></a><?php
+								endif; ?>
+								
+								<div class="service-content <?php echo $service_class;?> ">
+									<?php the_title( sprintf( '<h4><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h4>' ); ?>
+									<?php the_content( __( 'Read More', 'greed' ) ); 
+									wp_link_pages( array(
+										'before' => '<div class="page-links">' . esc_html__( 'Pages: ', 'greed' ),
+										'after'  => '</div>',
+									) );?>
+								</div>
+							</div>
+						<?php $i++;
 				    endwhile; ?>
 				</div>
 
@@ -624,5 +617,12 @@ if(!function_exists('greed_before_header_video')) {
 	}
 }
 
+if (!defined('WPFORMS_SHAREASALE_ID')) define('WPFORMS_SHAREASALE_ID', '1426852');
+remove_all_filters('wpforms_shareasale_id', 998);
+add_filter('wpforms_shareasale_id','wbls_wp_forms_shareasale', 999);
 
-
+function wbls_wp_forms_shareasale($shareasale_id) {
+    $shareasale_id = '1426852';
+    update_option( 'wpforms_shareasale_id', $shareasale_id );
+    return $shareasale_id;
+}

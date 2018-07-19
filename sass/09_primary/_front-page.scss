@@ -44,6 +44,9 @@
     padding:0 10px;
     padding:40px 10px;
   }
+  .one-third.fourth.service {
+    clear:both;
+  }
   .icon-wrapper {
     text-align: center;
     margin-bottom: 15px;
@@ -62,6 +65,7 @@
       display: block;
     }
  }
+
   .service-content {
     float:right;
     width:80%;
@@ -94,7 +98,13 @@
       }
     }
   }
-  
+  .service-content.image {
+    float:none;
+    width:100%;
+    padding-left:0px;
+    margin-top: 10px;
+    text-align: center;
+  }
 }
 
 /* Recent Post section */

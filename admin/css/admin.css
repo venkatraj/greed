@@ -62,10 +62,8 @@ a[href="themes.php?page=greed_upgrade"] {
   background-color: #d54e21;
   color: #fff;
   font-size: 12px;
- //line-height: 17px;
   font-weight: 600;
   margin: 0px 0 0 2px;
-  //vertical-align: top;
   -webkit-border-radius: 10px;
   border-radius: 100%;
   z-index: 26;
@@ -236,5 +234,11 @@ a[href="themes.php?page=greed_upgrade"] {
   .wrap .one-third.column .fa {
     font-size: 50px;
     color: #03a9f4; }
+
+/* One click demo plugin code */
+
+.ocdi__intro-notice.notice.notice-warning.is-dismissible {
+  display: none !important;
+}   
 
 /*# sourceMappingURL=admin.css.map */
